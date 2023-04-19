@@ -1,0 +1,10 @@
+extend type Query {
+  getSeries: [Series]
+}
+
+type Series {
+  id: ID!
+  name: String!
+  numberOfBooks: Int!
+  authorId: ID!
+}
