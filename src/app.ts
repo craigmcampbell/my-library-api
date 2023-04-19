@@ -16,7 +16,7 @@ import { applyMiddleware } from 'graphql-middleware';
 import { expressMiddleware } from '@apollo/server/express4';
 
 // Models
-import Context from './models/Context.interface';
+import { Context } from './models/Context.interface';
 
 require('dotenv').config();
 

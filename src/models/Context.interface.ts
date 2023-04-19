@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-export default interface Context {
+export interface Context {
   token?: string;
   prisma?: PrismaClient;
   userId?: string | undefined;

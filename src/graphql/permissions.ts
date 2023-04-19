@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql';
 import { and, or, rule, shield } from 'graphql-shield';
-import Context from '../models/Context.interface';
+import { Context } from '../models/Context.interface';
 
 export default shield(
   {

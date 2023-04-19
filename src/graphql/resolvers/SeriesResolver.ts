@@ -1,8 +1,9 @@
-import { IResolvers } from '@graphql-tools/utils';
+import { SeriesResolvers, Series } from '../__generated__/resolvers-types';
+import { Context } from '../../models/Context.interface';
 
-const SeriesResolver: IResolvers = {
+const SeriesResolver: SeriesResolvers = {
   Query: {
-    getSeries(_: void, __: void, ___: void) {
+    getSeries(_: void, __: void, ___: Context): Series[] {
       return [
         {
           id: '1',
