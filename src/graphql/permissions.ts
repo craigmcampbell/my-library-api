@@ -54,5 +54,8 @@ function userQueryPermissions() {
 }
 
 function userMutationPermissions() {
-  return {};
+  console.log('here');
+  return {
+    addSeries: isOpen,
+  };
 }

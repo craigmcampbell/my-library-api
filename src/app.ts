@@ -6,6 +6,7 @@ import express, { Express, Request, Response } from 'express';
 import helmet from 'helmet';
 import http from 'http';
 import morgan from 'morgan';
+import prisma from './prismaClient';
 
 // Apollo and GraphQL
 import permissions from './graphql/permissions';
@@ -32,12 +33,18 @@ const server = new ApolloServer<Context>({
 (async () => {
   await server.start();
 
+  const myContext: Context = {
+    prisma,
+  };
+
   app.use(
     '/graphql',
     cors<cors.CorsRequest>(),
     bodyParser.json(),
     expressMiddleware(server, {
-      context: async ({ req }) => ({ token: req.headers.token }), //TODO: Include prisma instance
+      context: async () => {
+        return myContext;
+      },
     })
   );
 })();

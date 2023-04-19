@@ -56,6 +56,6 @@
     "delay": "2500"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node src/seed.ts"
   }
 }

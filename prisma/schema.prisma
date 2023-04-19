@@ -1,0 +1,155 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum HistoryType {
+  books
+  highlights
+
+  @@map("history_type")
+}
+
+enum ReadingStatus {
+  Unread
+  Next
+  Reading
+  Read
+
+  @@map("reading_status")
+}
+
+model Author {
+  firstName String @map("first_name")
+  id        String @id @db.Uuid
+  lastName  String @map("last_name")
+
+  Series Series[]
+  Book   Book[]
+
+  @@map("authors")
+}
+
+model Book {
+  audioLength   String        @map("audio_length")
+  authorId      String        @map("author_id") @db.Uuid
+  bookNumber    Int?          @map("book_number")
+  coverUrl      String        @map("cover_url")
+  dateAdded     DateTime      @map("date_added")
+  genreId       String        @map("genre_id") @db.Uuid
+  id            String        @id @db.Uuid
+  rating        Int
+  readingStatus ReadingStatus @map("reading_status")
+  seriesId      String        @map("series_id") @db.Uuid
+  title         String
+
+  author         Author           @relation(fields: [authorId], references: [id])
+  bookTags       BookTag[]
+  genre          Genre            @relation(fields: [genreId], references: [id])
+  series         Series           @relation(fields: [seriesId], references: [id])
+  ReadingHistory ReadingHistory[]
+
+  @@map("books")
+}
+
+model BookTag {
+  bookId String @map("book_id") @db.Uuid
+  tagId  String @map("tag_id") @db.Uuid
+
+  book Book @relation(fields: [bookId], references: [id])
+  tag  Tag  @relation(fields: [tagId], references: [id])
+
+  @@id([bookId, tagId])
+  @@map("book_tags")
+}
+
+model Genre {
+  id   String @id @db.Uuid
+  name String
+  Book Book[]
+
+  @@map("genres")
+}
+
+model ReadingGoal {
+  id   String @id @db.Uuid
+  year Int
+
+  @@map("reading_goals")
+}
+
+model ReadingHistory {
+  bookId        String   @map("book_id") @db.Uuid
+  dateCompleted DateTime @map("date_completed")
+  id            String   @id @db.Uuid
+
+  book Book @relation(fields: [bookId], references: [id])
+
+  @@map("reading_histories")
+}
+
+model ReadwiseBook {
+  id                 Int      @id
+  title              String
+  author             String
+  category           String
+  source             String
+  numberOfHighlights Int      @map("number_of_highlights")
+  lastHighlightedAt  DateTime @map("last_highlighted_at")
+  lastUpdated        DateTime @map("last_updated")
+  coverUrl           String   @map("cover_url")
+  highlightsUrl      String   @map("highlights_url")
+  asin               String?
+
+  @@map("readwise_books")
+}
+
+model ReadwiseHistory {
+  id                    String                  @id @db.Uuid
+  historyType           HistoryType
+  lastRun               DateTime?               @map("last_run")
+  ReadwiseHistoryDetail ReadwiseHistoryDetail[]
+
+  @@map("readwise_histories")
+}
+
+model ReadwiseHistoryDetail {
+  id                 String   @id @db.Uuid
+  readwiseHistoryId  String   @map("readwise_history_id") @db.Uuid
+  numBooksAdded      Int?     @map("num_books_added")
+  numBooksUpdated    Int?     @map("num_books_updated")
+  numHighlightsAdded Int?     @map("num_highlights_added")
+  importDate         DateTime @map("import_date")
+
+  readwiseHistory ReadwiseHistory @relation(fields: [readwiseHistoryId], references: [id])
+
+  @@map("readwise_history_details")
+}
+
+model Series {
+  id            String @id @db.Uuid
+  name          String
+  numberOfBooks Int    @map("number_of_books")
+  authorId      String @map("author_id") @db.Uuid
+
+  author Author @relation(fields: [authorId], references: [id])
+  Book   Book[]
+
+  @@map("Series")
+}
+
+model Tag {
+  id   String @id @db.Uuid
+  name String
+
+  bookTags BookTag[]
+
+  @@map("tags")
+}

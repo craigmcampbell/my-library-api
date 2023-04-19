@@ -1,5 +1,11 @@
 extend type Query {
-  getSeries: [Series]
+  getAllSeries: [Series]
+  getSeriesById(id: ID!): Series
+}
+
+extend type Mutation {
+  addSeries(series: AddSeriesInput!): Series!
+  updateSeries(series: UpdateSeriesInput!): Series!
 }
 
 type Series {
@@ -7,4 +13,20 @@ type Series {
   name: String!
   numberOfBooks: Int!
   authorId: ID!
+  author: Author!
+}
+
+input AddSeriesInput {
+  authorId: ID
+  authorFirstName: String
+  authorLastName: String
+  name: String!
+  numberOfBooks: Int!
+}
+
+input UpdateSeriesInput {
+  authorId: ID!
+  id: ID!
+  name: String!
+  numberOfBooks: Int!
 }

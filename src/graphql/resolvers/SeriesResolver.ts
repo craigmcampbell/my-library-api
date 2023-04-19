@@ -1,20 +1,62 @@
-import { SeriesResolvers, Series } from '../__generated__/resolvers-types';
 import { Context } from '../../models/Context.interface';
+import { addSeries, getAllSeries, getSeriesById, updateSeries } from '../../domain/series/series.service';
+import { GraphQLError } from 'graphql';
+import {
+  MutationAddSeriesArgs,
+  MutationUpdateSeriesArgs,
+  QueryGetSeriesByIdArgs,
+  Series,
+  SeriesResolvers,
+} from '../__generated__/resolvers-types';
 
 const SeriesResolver: SeriesResolvers = {
   Query: {
-    getSeries(_: void, __: void, ___: Context): Series[] {
-      return [
-        {
-          id: '1',
-          name: 'Series 1',
-          numberOfBooks: 3,
-          authorId: '8a15b022-6b89-44b0-bec3-eebe40579c96',
-        },
-      ];
+    async getAllSeries(_: void, __: void, context: Context) {
+      try {
+        return await getAllSeries(context);
+      } catch (error: any) {
+        throw new GraphQLError(error.message);
+      }
+    },
+    async getSeriesById(_: void, args: QueryGetSeriesByIdArgs, context: Context) {
+      try {
+        return await getSeriesById(context, args.id);
+      } catch (error: any) {
+        throw new GraphQLError(error.message);
+      }
     },
   },
-  Mutation: {},
+  Mutation: {
+    async addSeries(_: void, args: MutationAddSeriesArgs, context: Context) {
+      try {
+        const { authorId, name, numberOfBooks, authorFirstName, authorLastName } = args.series;
+
+        return await addSeries(context, {
+          authorFirstName: authorFirstName ?? '',
+          authorId: authorId ?? '',
+          authorLastName: authorLastName ?? '',
+          name,
+          numberOfBooks,
+        });
+      } catch (error: any) {
+        throw new GraphQLError(error.message);
+      }
+    },
+    async updateSeries(_: void, args: MutationUpdateSeriesArgs, context: Context) {
+      try {
+        const { authorId, id, name, numberOfBooks } = args.series;
+
+        return await updateSeries(context, {
+          authorId: authorId ?? '',
+          id,
+          name,
+          numberOfBooks,
+        });
+      } catch (error: any) {
+        throw new GraphQLError(error.message);
+      }
+    },
+  },
 };
 
 export default SeriesResolver;

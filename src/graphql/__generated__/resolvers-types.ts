@@ -5,6 +5,7 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -14,19 +15,60 @@ export type Scalars = {
   Float: number;
 };
 
+export type AddSeriesInput = {
+  authorFirstName?: InputMaybe<Scalars['String']>;
+  authorId?: InputMaybe<Scalars['ID']>;
+  authorLastName?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  numberOfBooks: Scalars['Int'];
+};
+
+export type Author = {
+  __typename?: 'Author';
+  firstName: Scalars['String'];
+  id: Scalars['ID'];
+  lastName: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   _empty?: Maybe<Scalars['String']>;
+  addSeries: Series;
+  updateSeries: Series;
+};
+
+
+export type MutationAddSeriesArgs = {
+  series: AddSeriesInput;
+};
+
+
+export type MutationUpdateSeriesArgs = {
+  series: UpdateSeriesInput;
 };
 
 export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
-  getSeries?: Maybe<Array<Maybe<Series>>>;
+  getAllSeries?: Maybe<Array<Maybe<Series>>>;
+  getSeriesById?: Maybe<Series>;
+};
+
+
+export type QueryGetSeriesByIdArgs = {
+  id: Scalars['ID'];
 };
 
 export type Series = {
   __typename?: 'Series';
+  author: Author;
+  authorId: Scalars['ID'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  numberOfBooks: Scalars['Int'];
+};
+
+export type UpdateSeriesInput = {
   authorId: Scalars['ID'];
   id: Scalars['ID'];
   name: Scalars['String'];
@@ -105,6 +147,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  AddSeriesInput: AddSeriesInput;
+  Author: ResolverTypeWrapper<Author>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
@@ -112,10 +156,13 @@ export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>;
   Series: ResolverTypeWrapper<Series>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  UpdateSeriesInput: UpdateSeriesInput;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  AddSeriesInput: AddSeriesInput;
+  Author: Author;
   Boolean: Scalars['Boolean'];
   ID: Scalars['ID'];
   Int: Scalars['Int'];
@@ -123,18 +170,30 @@ export type ResolversParentTypes = ResolversObject<{
   Query: {};
   Series: Series;
   String: Scalars['String'];
+  UpdateSeriesInput: UpdateSeriesInput;
+}>;
+
+export type AuthorResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = ResolversObject<{
+  firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  addSeries?: Resolver<ResolversTypes['Series'], ParentType, ContextType, RequireFields<MutationAddSeriesArgs, 'series'>>;
+  updateSeries?: Resolver<ResolversTypes['Series'], ParentType, ContextType, RequireFields<MutationUpdateSeriesArgs, 'series'>>;
 }>;
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  getSeries?: Resolver<Maybe<Array<Maybe<ResolversTypes['Series']>>>, ParentType, ContextType>;
+  getAllSeries?: Resolver<Maybe<Array<Maybe<ResolversTypes['Series']>>>, ParentType, ContextType>;
+  getSeriesById?: Resolver<Maybe<ResolversTypes['Series']>, ParentType, ContextType, RequireFields<QueryGetSeriesByIdArgs, 'id'>>;
 }>;
 
 export type SeriesResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Series'] = ResolversParentTypes['Series']> = ResolversObject<{
+  author?: Resolver<ResolversTypes['Author'], ParentType, ContextType>;
   authorId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -143,6 +202,7 @@ export type SeriesResolvers<ContextType = Context, ParentType extends ResolversP
 }>;
 
 export type Resolvers<ContextType = Context> = ResolversObject<{
+  Author?: AuthorResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Series?: SeriesResolvers<ContextType>;
