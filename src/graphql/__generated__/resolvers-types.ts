@@ -15,6 +15,11 @@ export type Scalars = {
   Float: number;
 };
 
+export type AddAuthorInput = {
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+};
+
 export type AddSeriesInput = {
   authorFirstName?: InputMaybe<Scalars['String']>;
   authorId?: InputMaybe<Scalars['ID']>;
@@ -33,13 +38,25 @@ export type Author = {
 export type Mutation = {
   __typename?: 'Mutation';
   _empty?: Maybe<Scalars['String']>;
+  addAuthor: Author;
   addSeries: Series;
+  updateAuthor: Author;
   updateSeries: Series;
+};
+
+
+export type MutationAddAuthorArgs = {
+  author: AddAuthorInput;
 };
 
 
 export type MutationAddSeriesArgs = {
   series: AddSeriesInput;
+};
+
+
+export type MutationUpdateAuthorArgs = {
+  author: UpdateAuthorInput;
 };
 
 
@@ -50,8 +67,15 @@ export type MutationUpdateSeriesArgs = {
 export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
+  getAllAuthors?: Maybe<Array<Author>>;
   getAllSeries?: Maybe<Array<Maybe<Series>>>;
+  getAuthorById?: Maybe<Author>;
   getSeriesById?: Maybe<Series>;
+};
+
+
+export type QueryGetAuthorByIdArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -66,6 +90,12 @@ export type Series = {
   id: Scalars['ID'];
   name: Scalars['String'];
   numberOfBooks: Scalars['Int'];
+};
+
+export type UpdateAuthorInput = {
+  firstName: Scalars['String'];
+  id: Scalars['ID'];
+  lastName: Scalars['String'];
 };
 
 export type UpdateSeriesInput = {
@@ -147,6 +177,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  AddAuthorInput: AddAuthorInput;
   AddSeriesInput: AddSeriesInput;
   Author: ResolverTypeWrapper<Author>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
@@ -156,11 +187,13 @@ export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>;
   Series: ResolverTypeWrapper<Series>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  UpdateAuthorInput: UpdateAuthorInput;
   UpdateSeriesInput: UpdateSeriesInput;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  AddAuthorInput: AddAuthorInput;
   AddSeriesInput: AddSeriesInput;
   Author: Author;
   Boolean: Scalars['Boolean'];
@@ -170,6 +203,7 @@ export type ResolversParentTypes = ResolversObject<{
   Query: {};
   Series: Series;
   String: Scalars['String'];
+  UpdateAuthorInput: UpdateAuthorInput;
   UpdateSeriesInput: UpdateSeriesInput;
 }>;
 
@@ -182,13 +216,17 @@ export type AuthorResolvers<ContextType = Context, ParentType extends ResolversP
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  addAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationAddAuthorArgs, 'author'>>;
   addSeries?: Resolver<ResolversTypes['Series'], ParentType, ContextType, RequireFields<MutationAddSeriesArgs, 'series'>>;
+  updateAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationUpdateAuthorArgs, 'author'>>;
   updateSeries?: Resolver<ResolversTypes['Series'], ParentType, ContextType, RequireFields<MutationUpdateSeriesArgs, 'series'>>;
 }>;
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  getAllAuthors?: Resolver<Maybe<Array<ResolversTypes['Author']>>, ParentType, ContextType>;
   getAllSeries?: Resolver<Maybe<Array<Maybe<ResolversTypes['Series']>>>, ParentType, ContextType>;
+  getAuthorById?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType, RequireFields<QueryGetAuthorByIdArgs, 'id'>>;
   getSeriesById?: Resolver<Maybe<ResolversTypes['Series']>, ParentType, ContextType, RequireFields<QueryGetSeriesByIdArgs, 'id'>>;
 }>;
 

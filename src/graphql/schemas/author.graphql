@@ -1,4 +1,25 @@
+extend type Query {
+  getAllAuthors: [Author!]
+  getAuthorById(id: ID!): Author
+}
+
+extend type Mutation {
+  addAuthor(author: AddAuthorInput!): Author!
+  updateAuthor(author: UpdateAuthorInput!): Author!
+}
+
 type Author {
+  id: ID!
+  firstName: String!
+  lastName: String!
+}
+
+input AddAuthorInput {
+  firstName: String!
+  lastName: String!
+}
+
+input UpdateAuthorInput {
   id: ID!
   firstName: String!
   lastName: String!

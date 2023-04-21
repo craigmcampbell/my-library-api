@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import http from 'http';
 import morgan from 'morgan';
 import prisma from './prismaClient';
+import { loadEnv, env } from './env';
 
 // Apollo and GraphQL
 import permissions from './graphql/permissions';
@@ -22,6 +23,7 @@ import { Context } from './models/Context.interface';
 require('dotenv').config();
 
 const debug = Debug('app');
+loadEnv();
 const app: Express = express();
 const httpServer = http.createServer(app);
 
@@ -62,7 +64,7 @@ app.get('/', (req: Request, res: Response) => {
   res.json({ hello: 'world' });
 });
 
-const port = process.env.PORT;
+const port = env.PORT;
 
 process.on('uncaughtException', (err) => {
   console.error(`Uncaught exception: ${err.message}`);

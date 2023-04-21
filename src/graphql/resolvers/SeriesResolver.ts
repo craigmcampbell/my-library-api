@@ -5,7 +5,6 @@ import {
   MutationAddSeriesArgs,
   MutationUpdateSeriesArgs,
   QueryGetSeriesByIdArgs,
-  Series,
   SeriesResolvers,
 } from '../__generated__/resolvers-types';
 

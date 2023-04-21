@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/craig/.nvm/versions/node/v19.8.1/bin/node /Users/craig/.yarn/bin/yarn.js add -D graphql-codegen-add-plugin
+  /Users/craig/.nvm/versions/node/v19.8.1/bin/node /Users/craig/.yarn/bin/yarn.js add ts-env
 
 PATH: 
   /Users/craig/.rvm/gems/ruby-2.7.4/bin:/Users/craig/.rvm/gems/ruby-2.7.4@global/bin:/Users/craig/.rvm/rubies/ruby-2.7.4/bin:/Users/craig/.yarn/bin:/Users/craig/.config/yarn/global/node_modules/.bin:/Users/craig/.nvm/versions/node/v19.8.1/bin:/usr/local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Users/craig/.rvm/gems/ruby-2.7.4/bin:/Users/craig/.rvm/gems/ruby-2.7.4@global/bin:/Users/craig/.rvm/rubies/ruby-2.7.4/bin:/Users/craig/.yarn/bin:/Users/craig/.config/yarn/global/node_modules/.bin:/Users/craig/.nvm/versions/node/v19.8.1/bin:/Users/craig/.rover/bin:/Users/craig/.rvm/bin:/Users/craig/.rvm/bin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/graphql-codegen-add-plugin: Not found
+  Error: https://registry.yarnpkg.com/ts-env: Not found
       at params.callback [as _callback] (/Users/craig/.yarn/lib/cli.js:66145:18)
       at self.callback (/Users/craig/.yarn/lib/cli.js:140890:22)
       at Request.emit (node:events:512:28)
@@ -33,11 +33,10 @@ npm manifest:
     "description": "",
     "main": "src/app.ts",
     "scripts": {
-      "start": "DEBUG=app nodemon src/app.ts",
       "build": "tsc",
       "dbSeed": "npx prisma db seed",
-      "dev": "nodemon --exec 'ts-node --esm src/app.ts'",
-      "generate": "graphql-codegen --config codegen.yml"
+      "generate": "graphql-codegen --config codegen.yml",
+      "start": "DEBUG=app nodemon src/app.ts"
     },
     "author": "",
     "license": "ISC",
@@ -51,6 +50,7 @@ npm manifest:
       "cors": "^2.8.5",
       "debug": "^4.3.4",
       "dotenv": "^16.0.3",
+      "elasticsearch": "^16.7.3",
       "express": "^4.18.2",
       "graphql": "^16.6.0",
       "graphql-import-node": "^0.0.5",
@@ -70,6 +70,7 @@ npm manifest:
       "@graphql-codegen/typescript": "^3.0.3",
       "@graphql-codegen/typescript-resolvers": "^3.2.0",
       "@types/cors": "^2.8.13",
+      "@types/elasticsearch": "^5.0.40",
       "@types/express": "^4.17.17",
       "@types/lodash": "^4.14.194",
       "@types/morgan": "^1.9.4",
@@ -86,7 +87,7 @@ npm manifest:
       "delay": "2500"
     },
     "prisma": {
-      "seed": "ts-node prisma/seed.ts"
+      "seed": "ts-node src/seed.ts"
     }
   }
 
@@ -1449,6 +1450,11 @@ Lockfile:
     dependencies:
       "@types/ms" "*"
   
+  "@types/elasticsearch@^5.0.40":
+    version "5.0.40"
+    resolved "https://registry.yarnpkg.com/@types/elasticsearch/-/elasticsearch-5.0.40.tgz#811f6954088c264173e0a9876b97933250a4da10"
+    integrity sha512-lhnbkC0XorAD7Dt7X+94cXUSHEdDNnEVk/DgFLHgIZQNhixV631Lj4+KpXunTT5rCHyj9RqK3TfO7QrOiwEeUQ==
+  
   "@types/express-serve-static-core@^4.17.30", "@types/express-serve-static-core@^4.17.33":
     version "4.17.33"
     resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.33.tgz#de35d30a9d637dc1450ad18dd583d75d5733d543"
@@ -1636,6 +1642,13 @@ Lockfile:
     dependencies:
       debug "4"
   
+  agentkeepalive@^3.4.1:
+    version "3.5.2"
+    resolved "https://registry.yarnpkg.com/agentkeepalive/-/agentkeepalive-3.5.2.tgz#a113924dd3fa24a0bc3b78108c450c2abee00f67"
+    integrity sha512-e0L/HNe6qkQ7H19kTlRRqUibEAwDK5AFk6y3PtMsuut2VAH6+Q4xZml1tNDJD7kSAyqmbG/K08K5WEJYtUrSlQ==
+    dependencies:
+      humanize-ms "^1.2.1"
+  
   aggregate-error@^3.0.0:
     version "3.1.0"
     resolved "https://registry.yarnpkg.com/aggregate-error/-/aggregate-error-3.1.0.tgz#92670ff50f5359bdb7a3e0d40d0ec30c5737687a"
@@ -1651,10 +1664,20 @@ Lockfile:
     dependencies:
       type-fest "^0.21.3"
   
+  ansi-regex@^2.0.0:
+    version "2.1.1"
+    resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-2.1.1.tgz#c3b33ab5ee360d86e0e628f0468ae7ef27d654df"
+    integrity sha512-TIGnTpdo+E3+pCyAluZvtED5p5wCqLdezCyhPZzKPcxvFplEt4i+W7OONCKgeZFT3+y5NZZfOOS/Bdcanm1MYA==
+  
   ansi-regex@^5.0.1:
     version "5.0.1"
     resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-5.0.1.tgz#082cb2c89c9fe8659a311a53bd6a4dc5301db304"
     integrity sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==
+  
+  ansi-styles@^2.2.1:
+    version "2.2.1"
+    resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-2.2.1.tgz#b432dd3358b634cf75e1e4664368240533c1ddbe"
+    integrity sha512-kmCevFghRiWM7HB5zTPULl4r9bVFSWjz62MhqizDGUrq2NWuNMQyuv4tHHoKJHs69M/MF64lEcHdYIocrdWQYA==
   
   ansi-styles@^3.2.1:
     version "3.2.1"
@@ -1938,6 +1961,17 @@ Lockfile:
     dependencies:
       ansi-styles "^4.1.0"
       supports-color "^7.1.0"
+  
+  chalk@^1.0.0:
+    version "1.1.3"
+    resolved "https://registry.yarnpkg.com/chalk/-/chalk-1.1.3.tgz#a8115c55e4a702fe4d150abd3872822a7e09fc98"
+    integrity sha512-U3lRVLMSlsCfjqYPbLyVv11M9CPW4I728d6TCKMAOJueEeB9/8o+eSsMnxPJD+Q+K909sdESg7C+tIkoH6on1A==
+    dependencies:
+      ansi-styles "^2.2.1"
+      escape-string-regexp "^1.0.2"
+      has-ansi "^2.0.0"
+      strip-ansi "^3.0.0"
+      supports-color "^2.0.0"
   
   chalk@^2.0.0:
     version "2.4.2"
@@ -2294,6 +2328,15 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
     integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
   
+  elasticsearch@^16.7.3:
+    version "16.7.3"
+    resolved "https://registry.yarnpkg.com/elasticsearch/-/elasticsearch-16.7.3.tgz#bf0e1cc129ab2e0f06911953a1b1f3c740715fab"
+    integrity sha512-e9kUNhwnIlu47fGAr4W6yZJbkpsgQJB0TqNK8rCANe1J4P65B1sGnbCFTgcKY3/dRgCWnuP1AJ4obvzW604xEQ==
+    dependencies:
+      agentkeepalive "^3.4.1"
+      chalk "^1.0.0"
+      lodash "^4.17.10"
+  
   electron-to-chromium@^1.4.284:
     version "1.4.368"
     resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.368.tgz#75901f97d3e23da2e66feb1e61fbb8e70ac96430"
@@ -2326,7 +2369,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
     integrity sha512-NiSupZ4OeuGwr68lGIeym/ksIZMJodUGOSCZ/FSnTxcrekbvqrgdUxlJOMpijaKZVjAJrWrGs/6Jy8OMuyj9ow==
   
-  escape-string-regexp@^1.0.5:
+  escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
     version "1.0.5"
     resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
     integrity sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==
@@ -2648,6 +2691,13 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.6.0.tgz#c2dcffa4649db149f6282af726c8c83f1c7c5fdb"
     integrity sha512-KPIBPDlW7NxrbT/eh4qPXz5FiFdL5UbaA0XUNz2Rp3Z3hqBSkbj0GVjwFDztsWVauZUWsbKHgMg++sk8UX0bkw==
   
+  has-ansi@^2.0.0:
+    version "2.0.0"
+    resolved "https://registry.yarnpkg.com/has-ansi/-/has-ansi-2.0.0.tgz#34f5049ce1ecdf2b0649af3ef24e45ed35416d91"
+    integrity sha512-C8vBJ8DwUCx19vhm7urhTuUsr4/IyP6l4VzNQDv+ryHQObW3TTTp9yB68WpYgRe2bbaGuZ/se74IqFeVnMnLZg==
+    dependencies:
+      ansi-regex "^2.0.0"
+  
   has-flag@^3.0.0:
     version "3.0.0"
     resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-3.0.0.tgz#b5d454dc2199ae225699f3467e5a07f3b955bafd"
@@ -2717,6 +2767,13 @@ Lockfile:
     dependencies:
       agent-base "6"
       debug "4"
+  
+  humanize-ms@^1.2.1:
+    version "1.2.1"
+    resolved "https://registry.yarnpkg.com/humanize-ms/-/humanize-ms-1.2.1.tgz#c46e3159a293f6b896da29316d8b6fe8bb79bbed"
+    integrity sha512-Fl70vYtsAFb/C06PTS9dZBo7ihau+Tu/DNCk/OyHhea07S+aeMWpFFkUaXRa8fI+ScZbEI8dfSxwY7gxZ9SAVQ==
+    dependencies:
+      ms "^2.0.0"
   
   iconv-lite@0.4.24, iconv-lite@^0.4.24:
     version "0.4.24"
@@ -2997,7 +3054,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
     integrity sha512-HDWXG8isMntAyRF5vZ7xKuEvOhT4AhlRt/3czTSjvGUxjYCBVRQY48ViDHyfYz9VIoBkW4TMGQNapx+l3RUwdA==
   
-  lodash@^4.17.20, lodash@^4.17.21, lodash@~4.17.0:
+  lodash@^4.17.10, lodash@^4.17.20, lodash@^4.17.21, lodash@~4.17.0:
     version "4.17.21"
     resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
     integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -3163,7 +3220,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
     integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
   
-  ms@2.1.3, ms@^2.1.1:
+  ms@2.1.3, ms@^2.0.0, ms@^2.1.1:
     version "2.1.3"
     resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
     integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
@@ -3884,12 +3941,24 @@ Lockfile:
     dependencies:
       safe-buffer "~5.2.0"
   
+  strip-ansi@^3.0.0:
+    version "3.0.1"
+    resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-3.0.1.tgz#6a385fb8853d952d5ff05d0e8aaf94278dc63dcf"
+    integrity sha512-VhumSSbBqDTP8p2ZLKj40UjBCV4+v8bUSEpUb4KjRgWk9pbqGF4REFj6KEagidb2f/M6AzC0EmFyDNGaw9OCzg==
+    dependencies:
+      ansi-regex "^2.0.0"
+  
   strip-ansi@^6.0.0, strip-ansi@^6.0.1:
     version "6.0.1"
     resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
     integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
     dependencies:
       ansi-regex "^5.0.1"
+  
+  supports-color@^2.0.0:
+    version "2.0.0"
+    resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
+    integrity sha512-KKNVtd6pCYgPIKU4cp2733HWYCpplQhddZLBUryaAHou723x+FRzQ5Df824Fj+IyyuiQTRoub4SnIFfIcrp70g==
   
   supports-color@^5.3.0, supports-color@^5.5.0:
     version "5.5.0"
