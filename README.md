@@ -6,6 +6,8 @@ I decided to start this project to create the type of personal library tracker t
 
 I just have the backend going for now, which I test by using Postman. I'm working to get a front end going and will likely have two front ends - one Vue and one React. I'll link to those repos in the near future.
 
+This is very much a work-in-progress.
+
 # Getting Started
 
 If you haven't already, [install the doppler CLI](https://docs.doppler.com/docs/install-cli).
@@ -30,4 +32,5 @@ doppler update
 - Doppler (Planned)
 - GraphQL Shield
 - Prisma ORM for Postgres
+- Readwise API
 - Searchly.com (Planned)

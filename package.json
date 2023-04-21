@@ -9,7 +9,7 @@
     "generate": "graphql-codegen --config codegen.yml",
     "start": "DEBUG=app nodemon src/app.ts"
   },
-  "author": "",
+  "author": "Craig Campbell",
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.6.0",
