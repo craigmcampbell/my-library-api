@@ -26,5 +26,8 @@ doppler update
 
 ## Services Used
 
-- Doppler
-- Searchly.com (ElasticSearch)
+- Apollo GraphQL Server
+- Doppler (Planned)
+- GraphQL Shield
+- Prisma ORM for Postgres
+- Searchly.com (Planned)
