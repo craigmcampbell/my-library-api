@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/app.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "yarn && tsc",
     "dbSeed": "npx prisma db seed",
     "generate": "graphql-codegen --config codegen.yml",
     "start:dev": "SET DEBUG=app & nodemon src/app.ts",
