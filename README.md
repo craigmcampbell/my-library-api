@@ -10,6 +10,10 @@ This is very much a work-in-progress.
 
 # Getting Started
 
+## Configuring Doppler
+
+> Note: Doppler is optional. In the package.json start script, remove 'doppler run'.
+
 If you haven't already, [install the doppler CLI](https://docs.doppler.com/docs/install-cli).
 
 ```bash
@@ -24,6 +28,9 @@ doppler --version
 
 # Updating Doppler
 doppler update
+
+# Log In to Doppler
+doppler login
 ```
 
 ## Services Used
