@@ -4,11 +4,12 @@
   "description": "",
   "main": "src/app.ts",
   "scripts": {
-    "build": "yarn && tsc",
+    "build": "yarn && tsc --build && yarn run syncGraphql",
     "dbSeed": "npx prisma db seed",
     "generate": "graphql-codegen --config codegen.yml",
     "start:dev": "SET DEBUG=app & nodemon src/app.ts",
-    "start": "doppler run yarn start:dev"
+    "start": "doppler run yarn start:dev",
+    "syncGraphql": "rsync -r ./src/graphql/schemas ./dist/graphql/"
   },
   "author": "Craig Campbell",
   "license": "ISC",
