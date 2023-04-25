@@ -10,6 +10,14 @@ This is very much a work-in-progress.
 
 # Getting Started
 
+You will need to use the environment variables defined in .env.example to run this project. You can create a .env file in the root of the project and add the variables there.
+
+1. Run npm install
+2. Run 'npx prisma migrate dev' to run existing db migrations
+3. Run 'npm start' to start the server
+
+## Installing Doppler
+
 If you haven't already, [install the doppler CLI](https://docs.doppler.com/docs/install-cli).
 
 ```bash
