@@ -10,9 +10,15 @@ This is very much a work-in-progress.
 
 # Getting Started
 
-## Configuring Doppler
+You will need to use the environment variables defined in .env.example to run this project. You can create a .env file in the root of the project and add the variables there.
 
-> Note: Doppler is optional. In the package.json start script, remove 'doppler run'.
+1. Run yarn
+2. Run 'npx prisma migrate dev' to run existing db migrations
+3. Run 'yarn start' to start the server
+
+## Installing and Configuring Doppler
+
+> Note: Doppler is optional. In the package.json start script, remove 'doppler run'. See the .env.example file for configuration example and create a .env file in the root of the project..
 
 If you haven't already, [install the doppler CLI](https://docs.doppler.com/docs/install-cli).
 
