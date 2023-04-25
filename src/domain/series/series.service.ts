@@ -30,6 +30,22 @@ export async function addSeries(context: Context, series: AddSeriesProps): Promi
   });
 }
 
+export async function findOrCreateSeries(context: Context, series: AddSeriesProps) {
+  const retrievedSeries = await context.prisma.series.findFirst({
+    where: { name: { equals: series.name, mode: 'insensitive' } },
+  });
+
+  if (retrievedSeries) return retrievedSeries;
+
+  return await addSeries(context, {
+    authorFirstName: series.authorFirstName,
+    authorId: series.authorId,
+    authorLastName: series.authorLastName,
+    name: series.name,
+    numberOfBooks: series.numberOfBooks,
+  });
+}
+
 export async function getAllSeries(context: Context): Promise<Series[]> {
   return await context.prisma.series.findMany({ include: { author: true } });
 }
@@ -54,7 +70,6 @@ export async function updateSeries(context: Context, series: UpdateSeriesProps):
 }
 
 async function checkIfSeriesExistsForAuthor(context: Context, authorId: string, seriesName: string): Promise<boolean> {
-  console.info(`authorId: ${JSON.stringify(authorId)}`);
   const series = await context.prisma.series.findFirst({
     where: { authorId, name: { equals: seriesName, mode: 'insensitive' } },
   });

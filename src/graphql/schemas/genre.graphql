@@ -1,0 +1,8 @@
+extend type Query {
+  getAllGenres: [Genre!]
+}
+
+type Genre {
+  id: ID!
+  name: String!
+}

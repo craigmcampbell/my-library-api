@@ -1,0 +1,49 @@
+scalar Date
+
+enum BookType {
+  Audio
+  Kindle
+  Pdf
+  Physical
+}
+
+extend type Query {
+  getAllBooks: [Book!]
+}
+
+extend type Mutation {
+  addBookToWishlist(book: AddBookToWishlistInput!): Book!
+}
+
+type Book {
+  audioLength: String
+  author: Author!
+  authorId: ID!
+  bookNumber: Int
+  bookType: BookType!
+  coverUrl: String
+  dateAdded: Date!
+  genre: Genre!
+  genreId: ID!
+  id: ID!
+  rating: Int
+  readingStatus: String!
+  series: Series
+  seriesId: String
+  title: String!
+}
+
+input AddBookToWishlistInput {
+  audioLength: String
+  authorFirstName: String
+  authorId: ID
+  authorLastName: String
+  bookNumber: Int
+  bookType: BookType!
+  coverUrl: String
+  genreId: ID!
+  numberOfBooks: Int
+  seriesId: ID
+  seriesName: String
+  title: String!
+}

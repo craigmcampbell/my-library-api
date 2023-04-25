@@ -10,6 +10,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum BookType {
+  Audio
+  Kindle
+  Pdf
+  Physical
+}
+
 enum HistoryType {
   books
   highlights
@@ -18,10 +25,11 @@ enum HistoryType {
 }
 
 enum ReadingStatus {
-  Unread
   Next
-  Reading
   Read
+  Reading
+  Unread
+  Wishlist
 
   @@map("reading_status")
 }
@@ -38,22 +46,23 @@ model Author {
 }
 
 model Book {
-  audioLength   String        @map("audio_length")
+  audioLength   String?        @map("audio_length")
   authorId      String        @map("author_id") @db.Uuid
   bookNumber    Int?          @map("book_number")
-  coverUrl      String        @map("cover_url")
+  bookType      BookType      @map("book_type")
+  coverUrl      String?        @map("cover_url")
   dateAdded     DateTime      @map("date_added")
   genreId       String        @map("genre_id") @db.Uuid
   id            String        @id @db.Uuid
-  rating        Int
+  rating        Int?
   readingStatus ReadingStatus @map("reading_status")
-  seriesId      String        @map("series_id") @db.Uuid
+  seriesId      String?        @map("series_id") @db.Uuid
   title         String
 
   author         Author           @relation(fields: [authorId], references: [id])
   bookTags       BookTag[]
   genre          Genre            @relation(fields: [genreId], references: [id])
-  series         Series           @relation(fields: [seriesId], references: [id])
+  series         Series?           @relation(fields: [seriesId], references: [id])
   ReadingHistory ReadingHistory[]
 
   @@map("books")

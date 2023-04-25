@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { Context } from '../../models/Context.interface';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -13,11 +13,27 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: any;
 };
 
 export type AddAuthorInput = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
+};
+
+export type AddBookToWishlistInput = {
+  audioLength?: InputMaybe<Scalars['String']>;
+  authorFirstName?: InputMaybe<Scalars['String']>;
+  authorId?: InputMaybe<Scalars['ID']>;
+  authorLastName?: InputMaybe<Scalars['String']>;
+  bookNumber?: InputMaybe<Scalars['Int']>;
+  bookType: BookType;
+  coverUrl?: InputMaybe<Scalars['String']>;
+  genreId: Scalars['ID'];
+  numberOfBooks?: InputMaybe<Scalars['Int']>;
+  seriesId?: InputMaybe<Scalars['ID']>;
+  seriesName?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
 };
 
 export type AddSeriesInput = {
@@ -35,10 +51,43 @@ export type Author = {
   lastName: Scalars['String'];
 };
 
+export type Book = {
+  __typename?: 'Book';
+  audioLength?: Maybe<Scalars['String']>;
+  author: Author;
+  authorId: Scalars['ID'];
+  bookNumber?: Maybe<Scalars['Int']>;
+  bookType: BookType;
+  coverUrl?: Maybe<Scalars['String']>;
+  dateAdded: Scalars['Date'];
+  genre: Genre;
+  genreId: Scalars['ID'];
+  id: Scalars['ID'];
+  rating?: Maybe<Scalars['Int']>;
+  readingStatus: Scalars['String'];
+  series?: Maybe<Series>;
+  seriesId?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
+};
+
+export enum BookType {
+  Audio = 'Audio',
+  Kindle = 'Kindle',
+  Pdf = 'Pdf',
+  Physical = 'Physical'
+}
+
+export type Genre = {
+  __typename?: 'Genre';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   _empty?: Maybe<Scalars['String']>;
   addAuthor: Author;
+  addBookToWishlist: Book;
   addSeries: Series;
   updateAuthor: Author;
   updateSeries: Series;
@@ -47,6 +96,11 @@ export type Mutation = {
 
 export type MutationAddAuthorArgs = {
   author: AddAuthorInput;
+};
+
+
+export type MutationAddBookToWishlistArgs = {
+  book: AddBookToWishlistInput;
 };
 
 
@@ -68,6 +122,8 @@ export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
   getAllAuthors?: Maybe<Array<Author>>;
+  getAllBooks?: Maybe<Array<Book>>;
+  getAllGenres?: Maybe<Array<Genre>>;
   getAllSeries?: Maybe<Array<Maybe<Series>>>;
   getAuthorById?: Maybe<Author>;
   getSeriesById?: Maybe<Series>;
@@ -178,9 +234,14 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   AddAuthorInput: AddAuthorInput;
+  AddBookToWishlistInput: AddBookToWishlistInput;
   AddSeriesInput: AddSeriesInput;
   Author: ResolverTypeWrapper<Author>;
+  Book: ResolverTypeWrapper<Book>;
+  BookType: BookType;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Date: ResolverTypeWrapper<Scalars['Date']>;
+  Genre: ResolverTypeWrapper<Genre>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -194,9 +255,13 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   AddAuthorInput: AddAuthorInput;
+  AddBookToWishlistInput: AddBookToWishlistInput;
   AddSeriesInput: AddSeriesInput;
   Author: Author;
+  Book: Book;
   Boolean: Scalars['Boolean'];
+  Date: Scalars['Date'];
+  Genre: Genre;
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Mutation: {};
@@ -214,9 +279,39 @@ export type AuthorResolvers<ContextType = Context, ParentType extends ResolversP
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type BookResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Book'] = ResolversParentTypes['Book']> = ResolversObject<{
+  audioLength?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  author?: Resolver<ResolversTypes['Author'], ParentType, ContextType>;
+  authorId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  bookNumber?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  bookType?: Resolver<ResolversTypes['BookType'], ParentType, ContextType>;
+  coverUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  dateAdded?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  genre?: Resolver<ResolversTypes['Genre'], ParentType, ContextType>;
+  genreId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  rating?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  readingStatus?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  series?: Resolver<Maybe<ResolversTypes['Series']>, ParentType, ContextType>;
+  seriesId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
+  name: 'Date';
+}
+
+export type GenreResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Genre'] = ResolversParentTypes['Genre']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   addAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationAddAuthorArgs, 'author'>>;
+  addBookToWishlist?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<MutationAddBookToWishlistArgs, 'book'>>;
   addSeries?: Resolver<ResolversTypes['Series'], ParentType, ContextType, RequireFields<MutationAddSeriesArgs, 'series'>>;
   updateAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationUpdateAuthorArgs, 'author'>>;
   updateSeries?: Resolver<ResolversTypes['Series'], ParentType, ContextType, RequireFields<MutationUpdateSeriesArgs, 'series'>>;
@@ -225,6 +320,8 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   getAllAuthors?: Resolver<Maybe<Array<ResolversTypes['Author']>>, ParentType, ContextType>;
+  getAllBooks?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType>;
+  getAllGenres?: Resolver<Maybe<Array<ResolversTypes['Genre']>>, ParentType, ContextType>;
   getAllSeries?: Resolver<Maybe<Array<Maybe<ResolversTypes['Series']>>>, ParentType, ContextType>;
   getAuthorById?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType, RequireFields<QueryGetAuthorByIdArgs, 'id'>>;
   getSeriesById?: Resolver<Maybe<ResolversTypes['Series']>, ParentType, ContextType, RequireFields<QueryGetSeriesByIdArgs, 'id'>>;
@@ -241,6 +338,9 @@ export type SeriesResolvers<ContextType = Context, ParentType extends ResolversP
 
 export type Resolvers<ContextType = Context> = ResolversObject<{
   Author?: AuthorResolvers<ContextType>;
+  Book?: BookResolvers<ContextType>;
+  Date?: GraphQLScalarType;
+  Genre?: GenreResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Series?: SeriesResolvers<ContextType>;

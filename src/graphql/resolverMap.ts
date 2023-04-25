@@ -1,9 +1,13 @@
+import { IResolvers } from '@graphql-tools/utils';
 import { merge } from 'lodash';
-import { Resolvers } from './__generated__/resolvers-types';
+
+import { DateScalarResolvers } from './resolvers/DateScalarResolver';
 
 import AuthorResolver from './resolvers/AuthorResolver';
+import BookResolver from './resolvers/BookResolver';
+import GenreResolver from './resolvers/GenreResolver';
 import SeriesResolver from './resolvers/SeriesResolver';
 
-const resolverMap: Resolvers = merge(AuthorResolver, SeriesResolver);
+const resolverMap: IResolvers = merge(AuthorResolver, BookResolver, DateScalarResolvers, GenreResolver, SeriesResolver);
 
 export default resolverMap;
