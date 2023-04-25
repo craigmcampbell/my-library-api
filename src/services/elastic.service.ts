@@ -1,5 +1,4 @@
 import SearchResult from '../models/ElasticResult.interface';
-import { env } from '../env';
 
 const elasticsearch = require('elasticsearch');
 
@@ -94,9 +93,9 @@ export async function search({ index, query, type }: SearchProps): Promise<Searc
 }
 
 function getElasticClient() {
-  const searchlyUrl = env.SEARCHLY_URL;
+  const searchlyUrl = process.env.SEARCHLY_URL;
 
-  if (env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development') {
     return new elasticsearch.Client({
       host: searchlyUrl,
       ssl: { rejectUnauthorized: false, pfx: [] },
