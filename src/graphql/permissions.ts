@@ -40,7 +40,6 @@ export const isAuthenticated = rule({ cache: 'contextual' })((_: void, __: void,
 });
 
 export const isAdminAuthenticated = rule({ cache: 'contextual' })((_: void, __: void, { userId, roles }: Context) => {
-  console.log('here');
   if (!userId || !roles || userId.length === 0) return false;
 
   // return hasAdminRole(roles);
@@ -54,7 +53,6 @@ function userQueryPermissions() {
 }
 
 function userMutationPermissions() {
-  console.log('here');
   return {
     addSeries: isOpen,
   };

@@ -2,18 +2,21 @@ import { Context } from '../../models/Context.interface';
 import { Author } from '@prisma/client';
 import GetUniqueId from '../../helpers/getUniqueId.helper';
 import { addToAuthorIndex, authorAlreadyExistsInElasticSearch } from './elasticAuthor.service';
+import FeatureFlags from '../../services/featureFlag.service';
 
 interface FindOrCreateAuthorArgs {
   firstName: string;
   lastName: string;
 }
 
+const featureFlags = FeatureFlags();
+
 export async function addAuthor(context: Context, author: FindOrCreateAuthorArgs): Promise<Author> {
   const { prisma } = context;
   const { firstName, lastName } = author;
   const authorId = GetUniqueId();
 
-  if (process.env.FLAG_ENABLE_ELASTIC_SEARCH === 'true') {
+  if (featureFlags.enableElasticSearch) {
     const alreadyExists = await authorAlreadyExistsInElasticSearch(author.firstName, author.lastName);
 
     if (!alreadyExists) {

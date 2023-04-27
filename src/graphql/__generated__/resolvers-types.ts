@@ -83,6 +83,20 @@ export type Genre = {
   name: Scalars['String'];
 };
 
+export type IsbnDbBook = {
+  __typename?: 'IsbnDbBook';
+  authors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  binding?: Maybe<Scalars['String']>;
+  datePublished?: Maybe<Scalars['String']>;
+  edition?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  isbn?: Maybe<Scalars['String']>;
+  pages?: Maybe<Scalars['Int']>;
+  publisher?: Maybe<Scalars['String']>;
+  synopsis?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   _empty?: Maybe<Scalars['String']>;
@@ -126,7 +140,9 @@ export type Query = {
   getAllGenres?: Maybe<Array<Genre>>;
   getAllSeries?: Maybe<Array<Maybe<Series>>>;
   getAuthorById?: Maybe<Author>;
+  getBookByIsbn?: Maybe<IsbnDbBook>;
   getSeriesById?: Maybe<Series>;
+  searchBooksByTitle?: Maybe<Array<IsbnDbBook>>;
 };
 
 
@@ -135,8 +151,18 @@ export type QueryGetAuthorByIdArgs = {
 };
 
 
+export type QueryGetBookByIsbnArgs = {
+  isbn: Scalars['String'];
+};
+
+
 export type QueryGetSeriesByIdArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QuerySearchBooksByTitleArgs = {
+  title: Scalars['String'];
 };
 
 export type Series = {
@@ -244,6 +270,7 @@ export type ResolversTypes = ResolversObject<{
   Genre: ResolverTypeWrapper<Genre>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
+  IsbnDbBook: ResolverTypeWrapper<IsbnDbBook>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   Series: ResolverTypeWrapper<Series>;
@@ -264,6 +291,7 @@ export type ResolversParentTypes = ResolversObject<{
   Genre: Genre;
   ID: Scalars['ID'];
   Int: Scalars['Int'];
+  IsbnDbBook: IsbnDbBook;
   Mutation: {};
   Query: {};
   Series: Series;
@@ -308,6 +336,20 @@ export type GenreResolvers<ContextType = Context, ParentType extends ResolversPa
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type IsbnDbBookResolvers<ContextType = Context, ParentType extends ResolversParentTypes['IsbnDbBook'] = ResolversParentTypes['IsbnDbBook']> = ResolversObject<{
+  authors?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
+  binding?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  datePublished?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  edition?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  isbn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  pages?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  publisher?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  synopsis?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   addAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationAddAuthorArgs, 'author'>>;
@@ -324,7 +366,9 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   getAllGenres?: Resolver<Maybe<Array<ResolversTypes['Genre']>>, ParentType, ContextType>;
   getAllSeries?: Resolver<Maybe<Array<Maybe<ResolversTypes['Series']>>>, ParentType, ContextType>;
   getAuthorById?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType, RequireFields<QueryGetAuthorByIdArgs, 'id'>>;
+  getBookByIsbn?: Resolver<Maybe<ResolversTypes['IsbnDbBook']>, ParentType, ContextType, RequireFields<QueryGetBookByIsbnArgs, 'isbn'>>;
   getSeriesById?: Resolver<Maybe<ResolversTypes['Series']>, ParentType, ContextType, RequireFields<QueryGetSeriesByIdArgs, 'id'>>;
+  searchBooksByTitle?: Resolver<Maybe<Array<ResolversTypes['IsbnDbBook']>>, ParentType, ContextType, RequireFields<QuerySearchBooksByTitleArgs, 'title'>>;
 }>;
 
 export type SeriesResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Series'] = ResolversParentTypes['Series']> = ResolversObject<{
@@ -341,6 +385,7 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   Book?: BookResolvers<ContextType>;
   Date?: GraphQLScalarType;
   Genre?: GenreResolvers<ContextType>;
+  IsbnDbBook?: IsbnDbBookResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Series?: SeriesResolvers<ContextType>;

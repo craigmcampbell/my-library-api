@@ -1,0 +1,17 @@
+extend type Query {
+  searchBooksByTitle(title: String!): [IsbnDbBook!]
+  getBookByIsbn(isbn: String!): IsbnDbBook
+}
+
+type IsbnDbBook {
+  authors: [String]
+  binding: String
+  datePublished: String
+  edition: String
+  image: String
+  isbn: String
+  pages: Int
+  publisher: String
+  synopsis: String
+  title: String
+}
