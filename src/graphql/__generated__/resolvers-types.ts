@@ -103,6 +103,7 @@ export type Mutation = {
   addAuthor: Author;
   addBookToWishlist: Book;
   addSeries: Series;
+  deleteSeries: Scalars['ID'];
   updateAuthor: Author;
   updateSeries: Series;
 };
@@ -120,6 +121,11 @@ export type MutationAddBookToWishlistArgs = {
 
 export type MutationAddSeriesArgs = {
   series: AddSeriesInput;
+};
+
+
+export type MutationDeleteSeriesArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -143,6 +149,7 @@ export type Query = {
   getBookByIsbn?: Maybe<IsbnDbBook>;
   getSeriesById?: Maybe<Series>;
   searchBooksByTitle?: Maybe<Array<IsbnDbBook>>;
+  searchSeriesByName?: Maybe<Array<Series>>;
 };
 
 
@@ -163,6 +170,11 @@ export type QueryGetSeriesByIdArgs = {
 
 export type QuerySearchBooksByTitleArgs = {
   title: Scalars['String'];
+};
+
+
+export type QuerySearchSeriesByNameArgs = {
+  name: Scalars['String'];
 };
 
 export type Series = {
@@ -355,6 +367,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   addAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationAddAuthorArgs, 'author'>>;
   addBookToWishlist?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<MutationAddBookToWishlistArgs, 'book'>>;
   addSeries?: Resolver<ResolversTypes['Series'], ParentType, ContextType, RequireFields<MutationAddSeriesArgs, 'series'>>;
+  deleteSeries?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteSeriesArgs, 'id'>>;
   updateAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationUpdateAuthorArgs, 'author'>>;
   updateSeries?: Resolver<ResolversTypes['Series'], ParentType, ContextType, RequireFields<MutationUpdateSeriesArgs, 'series'>>;
 }>;
@@ -369,6 +382,7 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   getBookByIsbn?: Resolver<Maybe<ResolversTypes['IsbnDbBook']>, ParentType, ContextType, RequireFields<QueryGetBookByIsbnArgs, 'isbn'>>;
   getSeriesById?: Resolver<Maybe<ResolversTypes['Series']>, ParentType, ContextType, RequireFields<QueryGetSeriesByIdArgs, 'id'>>;
   searchBooksByTitle?: Resolver<Maybe<Array<ResolversTypes['IsbnDbBook']>>, ParentType, ContextType, RequireFields<QuerySearchBooksByTitleArgs, 'title'>>;
+  searchSeriesByName?: Resolver<Maybe<Array<ResolversTypes['Series']>>, ParentType, ContextType, RequireFields<QuerySearchSeriesByNameArgs, 'name'>>;
 }>;
 
 export type SeriesResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Series'] = ResolversParentTypes['Series']> = ResolversObject<{

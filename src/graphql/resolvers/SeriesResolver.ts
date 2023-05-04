@@ -1,10 +1,19 @@
 import { Context } from '../../models/Context.interface';
-import { addSeries, getAllSeries, getSeriesById, updateSeries } from '../../domain/series/series.service';
+import {
+  addSeries,
+  deleteSeries,
+  getAllSeries,
+  getSeriesById,
+  searchSeriesByName,
+  updateSeries,
+} from '../../domain/series/series.service';
 import { GraphQLError } from 'graphql';
 import {
   MutationAddSeriesArgs,
+  MutationDeleteSeriesArgs,
   MutationUpdateSeriesArgs,
   QueryGetSeriesByIdArgs,
+  QuerySearchSeriesByNameArgs,
   SeriesResolvers,
 } from '../__generated__/resolvers-types';
 
@@ -24,6 +33,13 @@ const SeriesResolver: SeriesResolvers = {
         throw new GraphQLError(error.message);
       }
     },
+    async searchSeriesByName(_: void, args: QuerySearchSeriesByNameArgs, context: Context) {
+      try {
+        return await searchSeriesByName(context, args.name);
+      } catch (error: any) {
+        throw new GraphQLError(error.message);
+      }
+    },
   },
   Mutation: {
     async addSeries(_: void, args: MutationAddSeriesArgs, context: Context) {
@@ -37,6 +53,14 @@ const SeriesResolver: SeriesResolvers = {
           name,
           numberOfBooks,
         });
+      } catch (error: any) {
+        throw new GraphQLError(error.message);
+      }
+    },
+    async deleteSeries(_: void, args: MutationDeleteSeriesArgs, context: Context) {
+      try {
+        const deletedSeries = await deleteSeries(context, args.id);
+        return deletedSeries.id;
       } catch (error: any) {
         throw new GraphQLError(error.message);
       }

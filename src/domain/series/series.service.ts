@@ -30,6 +30,10 @@ export async function addSeries(context: Context, series: AddSeriesProps): Promi
   });
 }
 
+export async function deleteSeries(context: Context, id: string) {
+  return await context.prisma.series.delete({ where: { id } });
+}
+
 export async function findOrCreateSeries(context: Context, series: AddSeriesProps) {
   const retrievedSeries = await context.prisma.series.findFirst({
     where: { name: { equals: series.name, mode: 'insensitive' } },
@@ -53,6 +57,13 @@ export async function getAllSeries(context: Context): Promise<Series[]> {
 export async function getSeriesById(context: Context, id: string): Promise<Series | null> {
   return await context.prisma.series.findUnique({
     where: { id },
+    include: { author: true },
+  });
+}
+
+export async function searchSeriesByName(context: Context, name: string): Promise<Series[]> {
+  return await context.prisma.series.findMany({
+    where: { name: { contains: name, mode: 'insensitive' } },
     include: { author: true },
   });
 }

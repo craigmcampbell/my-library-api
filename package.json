@@ -9,7 +9,8 @@
     "generate": "graphql-codegen --config codegen.yml",
     "start:dev": "SET DEBUG=app & nodemon src/app.ts",
     "start": "doppler run yarn start:dev",
-    "syncGraphql": "rsync -r ./src/graphql/schemas ./dist/graphql/"
+    "syncGraphql": "rsync -r ./src/graphql/schemas ./dist/graphql/",
+    "syncSchema": "rover graph introspect http://localhost:3000/graphql | rover graph publish Library-mck2s8 --schema -"
   },
   "author": "Craig Campbell",
   "license": "ISC",
